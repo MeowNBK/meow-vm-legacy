@@ -162,11 +162,18 @@ void MeowVM::_handleRuntimeException(const VMError& e) {
         callStack.pop_back();
         closeUpvalues(currentFrame.slotStart);
     }
+    
     stackSlots.resize(handler.stackDepth);
     CallFrame& currentFrame = callStack.back();
     currentFrame.ip = handler.catchIp;
-    if (currentFrame.closure->proto->numRegisters > 0) {
-        stackSlots[currentFrame.slotStart] = Value(Str(e.what()));
+    if (handler.errorRegister != -1) {
+        Int errorSlot = currentFrame.slotStart + handler.errorRegister;
+        
+        if (errorSlot >= static_cast<Int>(stackSlots.size())) {
+            stackSlots.resize(static_cast<size_t>(errorSlot + 1), Value(Null{}));
+        }
+        
+        stackSlots[errorSlot] = Value(Str(e.what()));
     }
 }
 

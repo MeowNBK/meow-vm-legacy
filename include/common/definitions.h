@@ -21,7 +21,10 @@ struct ExceptionHandler {
     Int catchIp;
     Int frameDepth;
     Int stackDepth;
-    ExceptionHandler(Int c = 0, Int f = 0, Int s = 0) : catchIp(c), frameDepth(f), stackDepth(s) {}
+    Int errorRegister;
+
+    ExceptionHandler(Int c = 0, Int f = 0, Int s = 0, Int eReg = -1)
+        : catchIp(c), frameDepth(f), stackDepth(s), errorRegister(eReg) {}
 };
 
 struct ObjFunctionProto : public MeowObject {

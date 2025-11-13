@@ -2,7 +2,9 @@
 
 void MeowVM::opSetupTry() {
     Int target = currentInst->args[0];
-    ExceptionHandler h(target, static_cast<Int>(callStack.size() - 1), static_cast<Int>(stackSlots.size()));
+    Int errorReg = (currentInst->args.size() > 1) ? currentInst->args[1] : -1;
+    
+    ExceptionHandler h(target, static_cast<Int>(callStack.size() - 1), static_cast<Int>(stackSlots.size()), errorReg);
     exceptionHandlers.push_back(h);
 }
 
